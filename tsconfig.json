@@ -1,0 +1,21 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "module": "CommonJS",
+    "target": "ES2019",
+    "strict": true,
+    "alwaysStrict": true,
+    "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "allowJs": true,
+    "pretty": true,
+    "outDir": "dist",
+    "noImplicitAny": true,
+    "importHelpers": true,
+    "strictNullChecks": true,
+    "noUnusedParameters": true,
+    "checkJs": true
+  },
+  "include": ["./src/**/*"],
+  "exclude": ["node_modules"]
+}
