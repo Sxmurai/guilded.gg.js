@@ -4,6 +4,20 @@ A guilded.gg API wrapper.
 
 ---
 
+## Installation
+
+NPM:
+```
+npm i guilded.gg.js
+```
+
+Yarn:
+```
+yarn add guilded.gg.js
+```
+
+---
+
 ## Example
 
 ```js
@@ -30,3 +44,7 @@ client
 
 client.login(); // connect to the guilded gateway
 ```
+
+---
+
+<h4 align="center">Licensed under GPL-3.0</h4>
