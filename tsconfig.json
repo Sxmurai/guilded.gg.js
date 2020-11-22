@@ -11,7 +11,6 @@
     "pretty": true,
     "outDir": "dist",
     "noImplicitAny": true,
-    "importHelpers": true,
     "strictNullChecks": true,
     "noUnusedParameters": true,
     "checkJs": true
