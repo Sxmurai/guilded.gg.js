@@ -7,11 +7,13 @@ A guilded.gg API wrapper.
 ## Installation
 
 NPM:
+
 ```
 npm i guilded.gg.js
 ```
 
 Yarn:
+
 ```
 yarn add guilded.gg.js
 ```
@@ -36,9 +38,31 @@ client
     console.log("(Logging) :: Connected to guilded successfully.")
   )
   .on("messageCreate", (message) => {
-    // if the command is !ping, return with the clients latency
-    if (message.content[0].toLowerCase() === "!ping") {
-      return client.sendMessage(message.channelID, `Pong! \`${client.ws.latency}ms\``);
+    const prefix = "!";
+
+    if (
+      !message.content[0].toLowerCase().startsWith(prefix) ||
+      message.creator !== client.user.id
+    ) {
+      return;
+    }
+
+    const [cmd, ...args] = message.content[0]
+      .slice(prefix.length)
+      .trim()
+      .split(/ +/g);
+
+    if (cmd && message.content[0].startsWith(prefix)) {
+      client.deleteMessage(message.channelID, message.id);
+    }
+
+    switch (cmd.toLowerCase()) {
+      case "ping":
+        return client.sendMessage(
+          message.channelID,
+          `Pong! \`${client.ws.latency}ms\``
+        );
+        break;
     }
   });
 
