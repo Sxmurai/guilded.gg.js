@@ -32,7 +32,7 @@ export class Client extends EventEmitter {
 
   /**
    * Logs into guilded
-   * @param {?ClientOptions} options 
+   * @param {?ClientOptions} options
    */
   login(options) {
     if (options) {
@@ -91,15 +91,15 @@ export class Client extends EventEmitter {
                     {
                       object: "leaf",
                       text: content,
-                      marks: []
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      }
+                      marks: [],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      },
     };
 
     return this.rest.request(
@@ -110,6 +110,23 @@ export class Client extends EventEmitter {
         data: JSON.stringify(message),
       },
       true
+    );
+  }
+
+  /**
+   * Deletes a message
+   * @param {string} channel
+   * @param {string} message
+   */
+  async deleteMessage(channel, message) {
+    return this.rest.request(
+      "delete",
+      `/channels/${channel}/messages/${message}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
     );
   }
 }

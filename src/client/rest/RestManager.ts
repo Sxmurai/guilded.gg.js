@@ -24,7 +24,7 @@ export class RestManager {
   }
 
   public async request(
-    method: "get" | "post",
+    method: "get" | "post" | "delete",
     endpoint: string,
     body: Record<string, any> = {},
     json?: boolean
