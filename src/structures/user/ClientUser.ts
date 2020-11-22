@@ -78,6 +78,10 @@ export class ClientUser extends User {
     return this.client.rest.request("post", "/users/me/status", data);
   }
 
+  public clearStatus() {
+    return this.client.rest.request("delete", "/users/me/status")
+  }
+
   /**
    * Updates this client user
    * @param {Record<string, any>} data
