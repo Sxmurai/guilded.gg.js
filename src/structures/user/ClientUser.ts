@@ -32,6 +32,17 @@ export class ClientUser extends User {
     this.client = client;
   }
 
+  public setPassword(newPassword: string) {
+    this.client.emit(
+      "debug",
+      `(Connection) :: You are changing your password to: ${newPassword}`
+    );
+
+    return this.client.rest.request("post", "/users/me/passwowrd", {
+      newPassword,
+    });
+  }
+
   public setPresence(status: Status) {
     if (
       typeof status !== "number" ||
@@ -45,7 +56,7 @@ export class ClientUser extends User {
       return;
     }
 
-    return this.client.rest.request("post", "/users/me/presence", { status })
+    return this.client.rest.request("post", "/users/me/presence", { status });
   }
 
   public setStatus(text: string) {
@@ -79,7 +90,7 @@ export class ClientUser extends User {
   }
 
   public clearStatus() {
-    return this.client.rest.request("delete", "/users/me/status")
+    return this.client.rest.request("delete", "/users/me/status");
   }
 
   /**
