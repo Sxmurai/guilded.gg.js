@@ -161,7 +161,10 @@ export class Connection extends EventEmitter {
             break;
 
           case "ChatMessageUpdated":
-            //console.log(data[1]);
+            this.client.emit(
+              "messageUpdate",
+              new Message(data[1], this.client)
+            );
             break;
         }
         break;
