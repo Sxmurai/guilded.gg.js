@@ -45,12 +45,7 @@ export class ClientUser extends User {
       return;
     }
 
-    return this.client.rest.request("post", "/users/me/presence", {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: { status },
-    });
+    return this.client.rest.request("post", "/users/me/presence", { status })
   }
 
   public setStatus(text: string) {

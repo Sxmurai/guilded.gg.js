@@ -105,10 +105,7 @@ export class Client extends EventEmitter {
     return this.rest.request(
       "post",
       `/channels/${channel}/messages`,
-      {
-        headers: { "Content-Type": "application/json" },
-        data: JSON.stringify(message),
-      },
+      message,
       true
     );
   }

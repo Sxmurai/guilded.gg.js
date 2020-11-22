@@ -62,13 +62,8 @@ export class Connection extends EventEmitter {
       "post",
       "/login",
       {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        data: JSON.stringify({
-          email: this.client.email,
-          password: this.client.password,
-        }),
+        email: this.client.email,
+        password: this.client.password,
       },
       false
     );
@@ -78,7 +73,6 @@ export class Connection extends EventEmitter {
       .join("");
 
     this.client.rest.setCookie(cookie);
-
     this.connectedAt = Date.now();
 
     this.#socket = new ws(

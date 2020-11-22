@@ -31,11 +31,14 @@ export class RestManager {
   ) {
     const data: any = {
       method,
-      ...body,
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: this.#cookies
+      },
     };
 
-    if (this.#cookies) {
-      data.headers.Cookie = this.#cookies;
+    if (method !== "get" && body) {
+      data.data = JSON.stringify(body);
     }
 
     const res = await axios({
