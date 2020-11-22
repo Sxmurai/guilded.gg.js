@@ -123,7 +123,6 @@ export class Connection extends EventEmitter {
 
     switch (op) {
       case 0:
-        //this.client.emit("ready");
         this._debug(`Recieved HELLO, now starting to heartbeat.`);
 
         this.ping.init(data.pingInterval);
@@ -146,9 +145,6 @@ export class Connection extends EventEmitter {
 
       case 42:
         if (this.disabledEvents.includes(data[0])) {
-          this._debug(
-            `Disabled event recieved [${data[0]}]. I will discard this event.`
-          );
           break;
         }
 
@@ -172,7 +168,11 @@ export class Connection extends EventEmitter {
 
     this._debug(
       `Recieved OP code: ${op} [${
-        Array.isArray(data) ? data[0] : "No Event Name"
+        Array.isArray(data)
+          ? `${data[0]} [${
+              this.disabledEvents.includes(data[0]) ? "Disabled" : "Enabled"
+            }]`
+          : "No Event Name"
       }].`
     );
   }
