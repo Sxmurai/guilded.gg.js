@@ -52,6 +52,13 @@ export class Client extends EventEmitter {
     this.ws.connect().then(() => this.getMe());
   }
 
+  /**
+   * Logs you out of guilded.gg
+   */
+  logout() {
+    return this.rest.request("post", "/logout")
+  }
+
   async getMe() {
     const user = await this.rest.request(
       "get",
