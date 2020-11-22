@@ -89,8 +89,6 @@ export class ClientUser extends User {
     });
   }
 
-  // https://api.guilded.gg/users/me/profile/images
-
   public setAbout(options: About) {
     return this.edit({
       aboutInfo: Object.assign(
