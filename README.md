@@ -6,8 +6,6 @@ A guilded.gg API wrapper.
 
 ## Example
 
-**DISCLAIMER: this lib isnt done, so Message#channel.send and Client#ws.latency arent things yet.**
-
 ```js
 const { Client } = require("guilded.gg.js"); // import the client from the module
 
@@ -25,8 +23,8 @@ client
   )
   .on("messageCreate", (message) => {
     // if the command is !ping, return with the clients latency
-    if (message.content.toLowerCase() === "!ping") {
-      return message.channel.send(`Pong! \`${client.ws.latency}ms\``);
+    if (message.content[0].toLowerCase() === "!ping") {
+      return client.sendMessage(message.channelID, `Pong! \`${client.ws.latency}ms\``);
     }
   });
 
