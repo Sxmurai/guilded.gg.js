@@ -66,16 +66,18 @@ export class Client extends EventEmitter {
    * Logs you out of guilded.gg
    */
   logout() {
-    return this.rest.request("post", "/logout")
+    this.emit(
+      "debug",
+      `(Connection) :: You are going to be logged out in 5 seconds.`
+    );
+
+    return new Promise((res) => setTimeout(res, 5000)).then(() =>
+      this.rest.request("post", "/logout")
+    );
   }
 
   async getMe() {
-    const user = await this.rest.request(
-      "get",
-      "/me",
-      {},
-      true
-    );
+    const user = await this.rest.request("get", "/me", {}, true);
 
     this.user = new ClientUser(user, this);
   }
