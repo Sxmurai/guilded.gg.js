@@ -5,7 +5,7 @@ export enum Status {
   ONLINE = 1,
   IDLE,
   DND,
-  OFFLINE
+  OFFLINE,
 }
 
 export class ClientUser extends User {
@@ -35,10 +35,45 @@ export class ClientUser extends User {
   public setPresence(status: Status) {
     return this.client.rest.request("post", "/users/me/presence", {
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      data: { status }
-    })
+      data: { status },
+    });
+  }
+
+  public setStatus(text: string) {
+    const data = {
+      content: {
+        object: "value",
+        document: {
+          object: "document",
+          data: {},
+          nodes: [
+            {
+              object: "block",
+              type: "paragraph",
+              data: {},
+              nodes: [
+                {
+                  object: "text",
+                  leaves: [{ object: "leaf", text: text, marks: [] }],
+                },
+              ],
+            },
+          ],
+        },
+      },
+      customReactionId: 90002547,
+      //customReactionId: null,
+      expireInMs: 0,
+    };
+
+    return this.client.rest.request("post", "/users/me/status", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data
+    });
   }
 
   /**
