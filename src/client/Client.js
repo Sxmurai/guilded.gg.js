@@ -101,7 +101,6 @@ export class Client extends EventEmitter {
       confirmed: false,
       content: {
         object: "value",
-        //type: "markdown-plain-text",
         document: {
           object: "document",
           data: {},
@@ -109,7 +108,6 @@ export class Client extends EventEmitter {
             {
               object: "block",
               type: "markdown-plain-text",
-              //type: "block-quote-container",
               data: {},
               nodes: [
                 {
