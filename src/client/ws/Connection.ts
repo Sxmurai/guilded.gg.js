@@ -163,7 +163,7 @@ export class Connection extends EventEmitter {
             break;
 
           case "ChatMessageUpdated":
-            console.log(data[1]);
+            //console.log(data[1]);
             break;
         }
         break;
