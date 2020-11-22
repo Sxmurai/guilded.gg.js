@@ -12,6 +12,12 @@ interface UserEditOptions {
   email?: string;
   subdomain?: string;
   name?: string;
+  aboutInfo?: About;
+}
+
+interface About {
+  tagLine?: string;
+  bio?: string;
 }
 
 export class ClientUser extends User {
@@ -71,6 +77,18 @@ export class ClientUser extends User {
     });
   }
 
+  public setAbout(options: About) {
+    return this.edit({
+      aboutInfo: Object.assign(
+        {
+          tagLine: this.about?.customStatus,
+          bio: this.about?.bio,
+        },
+        options
+      ),
+    });
+  }
+
   public setPresence(status: Status) {
     if (
       typeof status !== "number" ||
@@ -122,7 +140,7 @@ export class ClientUser extends User {
   }
 
   public edit(options: UserEditOptions) {
-    return this.client.rest.request("put", `/${this.id}/profilev2`, {
+    return this.client.rest.request("put", `/users/${this.id}/profilev2`, {
       userId: this.id,
       ...options,
     });
