@@ -45,6 +45,8 @@ export class Ping {
   send() {
     this.sentAt = Date.now();
     this.connection.send("2");
+    this.connection.client.rest.request("put", "/users/me/ping");
+
     this.connection._debug(`Sent a ping packet.`);
   }
 
