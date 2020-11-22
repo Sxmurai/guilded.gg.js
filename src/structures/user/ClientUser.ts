@@ -77,6 +77,20 @@ export class ClientUser extends User {
     });
   }
 
+  public setBanner(url: string) {
+    return this.client.rest.request("post", `/users/me/profile/images/banner`, {
+      imageUrl: url,
+    });
+  }
+
+  public setAvatar(url: string) {
+    return this.client.rest.request("post", `/users/me/profile/images`, {
+      imageUrl: url,
+    });
+  }
+
+  // https://api.guilded.gg/users/me/profile/images
+
   public setAbout(options: About) {
     return this.edit({
       aboutInfo: Object.assign(
