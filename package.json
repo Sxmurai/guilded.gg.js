@@ -7,6 +7,10 @@
   "author": "Sxmurai <gavrw0607@gmail.com>",
   "license": "GPL-3.0",
   "private": false,
+  "scripts": {
+    "build": "rm -rf dist && tsc && babel dist -d dist",
+    "test": "node tests/test.js"
+  },
   "dependencies": {
     "axios": "^0.21.0",
     "uuid": "^8.3.1",
