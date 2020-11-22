@@ -123,8 +123,8 @@ export class Connection extends EventEmitter {
 
     switch (op) {
       case 0:
-        this.client.emit("ready");
-        this._debug(`Client is ready, now figuring out the ping interval`);
+        //this.client.emit("ready");
+        this._debug(`Recieved HELLO, now starting to heartbeat.`);
 
         this.ping.init(data.pingInterval);
         this.ping.send();
@@ -136,6 +136,14 @@ export class Connection extends EventEmitter {
         this._debug(`Gateway aknowledged our ping. Latency: ${this.latency}ms`);
         break;
 
+      case 40:
+        this._debug(
+          `Recieved the ready event from the gateway, marking as ready.`
+        );
+
+        this.client.emit("ready");
+        break;
+
       case 42:
         if (this.disabledEvents.includes(data[0])) {
           this._debug(
@@ -145,10 +153,6 @@ export class Connection extends EventEmitter {
         }
 
         switch (data[0]) {
-          case "USER_PINGED":
-            this.client.emit("userPinged", data[1]);
-            break;
-
           case "ChatMessageCreated":
             this.client.emit(
               "messageCreate",
@@ -163,9 +167,7 @@ export class Connection extends EventEmitter {
         break;
     }
 
-    this._debug(
-      `OP: ${op} Received: ${require("util").inspect(data, false, 0)}`
-    );
+    this._debug(`Recieved OP code: ${op}.`);
   }
 
   private async _open() {
