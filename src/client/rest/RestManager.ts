@@ -33,7 +33,7 @@ export class RestManager {
       method,
       headers: {
         "Content-Type": "application/json",
-        Cookie: this.#cookies
+        Cookie: this.#cookies ?? ""
       },
     };
 

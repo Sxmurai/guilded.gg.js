@@ -75,12 +75,7 @@ export class ClientUser extends User {
       expireInMs: 0,
     };
 
-    return this.client.rest.request("post", "/users/me/status", {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data,
-    });
+    return this.client.rest.request("post", "/users/me/status", data);
   }
 
   /**
