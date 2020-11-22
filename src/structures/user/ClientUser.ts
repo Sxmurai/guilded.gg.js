@@ -139,11 +139,11 @@ export class ClientUser extends User {
     return this.client.rest.request("delete", "/users/me/status");
   }
 
-  public postStatus(title: string, content: string) {
+  public createPost(title: string, content: string) {
     const message = {
       userId: this.id,
       createdBy: this.id,
-      id: Date.now(),
+      id: Math.round(Date.now() / 100000),
       title,
       message: {
         object: "value",
@@ -153,7 +153,7 @@ export class ClientUser extends User {
           nodes: [
             {
               object: "block",
-              type: "markdown-plain-text",
+              type: "paragraph",
               data: {},
               nodes: [
                 {
@@ -174,6 +174,10 @@ export class ClientUser extends User {
     };
 
     return this.client.rest.request("post", `/users/${this.id}/posts`, message);
+  }
+
+  public deletePost(id: number) {
+    return this.client.rest.request("delete", `/users/${this.id}/posts/${id}`);
   }
 
   public edit(options: UserEditOptions) {
