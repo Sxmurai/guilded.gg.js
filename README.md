@@ -71,4 +71,14 @@ client.login(); // connect to the guilded gateway
 
 ---
 
+## Support
+
+You may get support in the [Unofficial Guilded API](https://guilded.ga/api) server.
+
+You will have to then go to `#roles` and then press `guilded.gg.js` and add yourself to the role.
+
+Give it a second, or refresh your client. You will see a new group. Click on the group, go to `#support` and ask for help.
+
+---
+
 <h4 align="center">Licensed under GPL-3.0</h4>
