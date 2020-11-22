@@ -133,6 +133,7 @@ export class Connection extends EventEmitter {
         this._debug(`Client is ready, now figuring out the ping interval`);
 
         this.ping.init(data.pingInterval);
+        this.ping.send();
         break;
 
       case 3:

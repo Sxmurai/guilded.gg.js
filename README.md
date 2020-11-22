@@ -12,6 +12,7 @@ A guilded.gg API wrapper.
 const { Client } = require("guilded.gg.js"); // import the client from the module
 
 const client = new Client({
+  // you can opt out of the email and password data in the constructor and pass it though the login function.
   email: "your email", // your email
   password: "your password (KEEP THIS SAFE!)", // your password
   disabledEvents: ["ChatChannelTyping"], // the events to ignore

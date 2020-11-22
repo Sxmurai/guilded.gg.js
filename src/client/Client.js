@@ -5,19 +5,23 @@ import { ClientUser } from "../structures/user/ClientUser";
 import { RestManager } from "./rest/RestManager";
 import { Connection } from "./ws/Connection";
 
+import { v4 } from "uuid";
+
 export class Client extends EventEmitter {
   /**
    * Creates a new instance of a client
-   * @param {ClientOptions} options
+   * @param {?ClientOptions} options
    */
   constructor(options) {
     super();
 
-    this.email = options.email;
-    this.password = options.password;
+    if (options) {
+      this.email = options.email;
+      this.password = options.password;
+    }
 
     this.rest = new RestManager(this);
-    this.ws = new Connection(this, options.disabledEvents ?? []);
+    this.ws = new Connection(this, options?.disabledEvents ?? []);
 
     /**
      * The user that is connected
@@ -26,14 +30,23 @@ export class Client extends EventEmitter {
     this.user = null;
   }
 
-  login() {
+  /**
+   * Logs into guilded
+   * @param {?ClientOptions} options 
+   */
+  login(options) {
+    if (options) {
+      this.email = options.email;
+      this.password = options.password;
+    }
+
     this.emit(
       "debug",
       `(Connection) :: Logging in with email ${this.email
-        .split("@")[0]
+        ?.split("@")[0]
         .replace(/.+/g, (k) => "*".repeat(k.length))}@${
-        this.email.split("@")[1]
-      } and with password ${"*".repeat(this.password.length)}`
+        this.email?.split("@")[1]
+      } and with password ${"*".repeat(this.password?.length ?? 0)}`
     );
 
     this.ws.connect().then(() => this.getMe());
@@ -48,6 +61,56 @@ export class Client extends EventEmitter {
     );
 
     this.user = new ClientUser(user, this);
+  }
+
+  /**
+   * Sends a message
+   * @param {string} channel
+   * @param {string} content
+   */
+  async sendMessage(channel, content) {
+    const message = {
+      messageId: v4(),
+      confirmed: false,
+      content: {
+        object: "value",
+        //type: "markdown-plain-text",
+        document: {
+          object: "document",
+          data: {},
+          nodes: [
+            {
+              object: "block",
+              type: "markdown-plain-text",
+              //type: "block-quote-container",
+              data: {},
+              nodes: [
+                {
+                  object: "text",
+                  leaves: [
+                    {
+                      object: "leaf",
+                      text: content,
+                      marks: []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    };
+
+    return this.rest.request(
+      "post",
+      `/channels/${channel}/messages`,
+      {
+        headers: { "Content-Type": "application/json" },
+        data: JSON.stringify(message),
+      },
+      true
+    );
   }
 }
 

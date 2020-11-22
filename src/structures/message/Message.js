@@ -24,16 +24,28 @@ export class Message {
     this.id = data.message.id;
 
     /**
+     * The ID of the channel the message was created in
+     * @type {string}
+     */
+    this.channelID = data.channelId;
+
+    /**
      * The time the message was created at
      * @type {number}
      */
     this.createdAt = Date.parse(data.createdAt) ?? Date.now();
 
     /**
+     * The person who created the message
+     * @type {string}
+     */
+    this.creator = data.createdBy;
+
+    /**
      * The contents of the message
      * @type {string[]}
      */
-    this.content = this.getMessageContent(data.message.content)
+    this.content = this.getMessageContent(data.message.content);
   }
 
   /**
