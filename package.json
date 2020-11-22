@@ -2,7 +2,7 @@
   "name": "guilded.gg.js",
   "version": "1.0.0",
   "description": "A guilded.gg API wrapper",
-  "main": "./build/index.js",
+  "main": "./dist/index.js",
   "repository": "git@github.com:Sxmurai/guilded.gg.js.git",
   "author": "Sxmurai <gavrw0607@gmail.com>",
   "license": "GPL-3.0",
