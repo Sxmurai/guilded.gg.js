@@ -139,6 +139,43 @@ export class ClientUser extends User {
     return this.client.rest.request("delete", "/users/me/status");
   }
 
+  public postStatus(title: string, content: string) {
+    const message = {
+      userId: this.id,
+      createdBy: this.id,
+      id: Date.now(),
+      title,
+      message: {
+        object: "value",
+        document: {
+          object: "document",
+          data: {},
+          nodes: [
+            {
+              object: "block",
+              type: "markdown-plain-text",
+              data: {},
+              nodes: [
+                {
+                  object: "text",
+                  leaves: [
+                    {
+                      object: "leaf",
+                      text: content,
+                      marks: [],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      },
+    };
+
+    return this.client.rest.request("post", `/users/${this.id}/posts`, message);
+  }
+
   public edit(options: UserEditOptions) {
     return this.client.rest.request("put", `/users/${this.id}/profilev2`, {
       userId: this.id,
