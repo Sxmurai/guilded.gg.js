@@ -1,6 +1,7 @@
 import { EventEmitter } from "events";
 
 import { ClientUser } from "../structures/user/ClientUser";
+import { Team } from "../structures/Team";
 
 import { RestManager } from "./rest/RestManager";
 import { Connection } from "./ws/Connection";
@@ -24,8 +25,14 @@ export class Client extends EventEmitter {
     this.ws = new Connection(this, options?.disabledEvents ?? []);
 
     /**
+     * The teams the logged in user is in
+     * @type {Map<string, Team>}
+     */
+    this.teams = new Map();
+
+    /**
      * The user that is connected
-     * @type {null | import("../structures/user/ClientUser").ClientUser}
+     * @type {null | ClientUser}
      */
     this.user = null;
   }
@@ -49,7 +56,10 @@ export class Client extends EventEmitter {
       } and with password ${"*".repeat(this.password?.length ?? 0)}`
     );
 
-    this.ws.connect().then(() => this.getMe());
+    this.ws.connect().then(() => {
+      this.getMe();
+      this.getTeams();
+    });
   }
 
   /**
@@ -63,11 +73,19 @@ export class Client extends EventEmitter {
     const user = await this.rest.request(
       "get",
       "/me",
-      { headers: { "Content-Type": "application/json" } },
+      {},
       true
     );
 
     this.user = new ClientUser(user, this);
+  }
+
+  async getTeams() {
+    const teams = await this.rest.request("get", "/teams/", {}, true);
+
+    for (const team of teams.teams) {
+      this.teams.set(team.id, new Team(team, this));
+    }
   }
 
   /**
