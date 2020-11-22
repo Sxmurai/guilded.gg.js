@@ -170,7 +170,11 @@ export class Connection extends EventEmitter {
         break;
     }
 
-    this._debug(`Recieved OP code: ${op}.`);
+    this._debug(
+      `Recieved OP code: ${op} [${
+        Array.isArray(data) ? data[0] : "No Event Name"
+      }].`
+    );
   }
 
   private async _open() {
