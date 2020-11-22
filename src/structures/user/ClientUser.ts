@@ -57,7 +57,7 @@ export class ClientUser extends User {
   }
 
   public setSubdomain(subdomain: string) {
-    return this.edit({ subdomain })
+    return this.edit({ subdomain });
   }
 
   public setPassword(newPassword: string) {
