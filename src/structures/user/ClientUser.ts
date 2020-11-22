@@ -1,23 +1,51 @@
 import { Client } from "../../client/Client";
 import { User } from "./User";
 
+export enum Status {
+  ONLINE = 1,
+  IDLE,
+  DND,
+  OFFLINE
+}
+
 export class ClientUser extends User {
+  /**
+   * The users that have been blocked by the user
+   * @type {any[]}
+   */
+  public blocked: any[] = [];
+
+  /**
+   * The devices the user is on
+   * @type {any[]}
+   */
+  public devices: any[] = [];
+
   /**
    * Creates a new instance of a client user
    * @param {Record<string, any>} data
    * @param {Client} client
    */
-  constructor(data, client) {
+  public constructor(data: Record<string, any>, client: Client) {
     super(data, client);
 
     this.client = client;
   }
 
+  public setPresence(status: Status) {
+    return this.client.rest.request("post", "/users/me/presence", {
+      headers: {
+        "Content-Type": "application/json"
+      },
+      data: { status }
+    })
+  }
+
   /**
    * Updates this client user
-   * @param {Record<string, any>} data 
+   * @param {Record<string, any>} data
    */
-  update(data) {
+  public update(data: Record<string, any>) {
     super.update(data);
 
     const { user } = data;
@@ -26,7 +54,7 @@ export class ClientUser extends User {
      * The users that have been blocked by the user
      * @type {any[]}
      */
-    this.blocked = user.blocked ?? []
+    this.blocked = user.blocked ?? [];
 
     /**
      * The devices the user is on
