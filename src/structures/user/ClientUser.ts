@@ -8,6 +8,12 @@ export enum Status {
   OFFLINE,
 }
 
+interface UserEditOptions {
+  email?: string;
+  subdomain?: string;
+  name?: string;
+}
+
 export class ClientUser extends User {
   /**
    * The users that have been blocked by the user
@@ -38,10 +44,20 @@ export class ClientUser extends User {
       `(Connection) :: You are changing your username to: ${username}`
     );
 
-    return this.client.rest.request("put", `/${this.id}/profilev2`, {
-      userId: this.id,
-      name: username,
-    });
+    return this.edit({ name: username });
+  }
+
+  public setEmail(email: string) {
+    this.client.emit(
+      "debug",
+      `(Connection) :: You are changing your email to: ${email}`
+    );
+
+    return this.edit({ email });
+  }
+
+  public setSubdomain(subdomain: string) {
+    return this.edit({ subdomain })
   }
 
   public setPassword(newPassword: string) {
@@ -103,6 +119,13 @@ export class ClientUser extends User {
 
   public clearStatus() {
     return this.client.rest.request("delete", "/users/me/status");
+  }
+
+  public edit(options: UserEditOptions) {
+    return this.client.rest.request("put", `/${this.id}/profilev2`, {
+      userId: this.id,
+      ...options,
+    });
   }
 
   /**
