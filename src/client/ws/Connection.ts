@@ -37,6 +37,12 @@ export class Connection extends EventEmitter {
    */
   public disabledEvents: string[] = [];
 
+  /**
+   * The latency of the connection to the guilded gateway
+   * @type {number}
+   */
+  public latency = 0;
+
   public constructor(client: Client, disabledEvents?: string[]) {
     super();
 
@@ -130,16 +136,16 @@ export class Connection extends EventEmitter {
         break;
 
       case 3:
-        this._debug(
-          `Gateway aknowledged our ping. Latency: ${
-            Date.now() - this.ping.sentAt!
-          }ms`
-        );
+        this.latency = Date.now() - this.ping.sentAt!;
+
+        this._debug(`Gateway aknowledged our ping. Latency: ${this.latency}ms`);
         break;
 
       case 42:
         if (this.disabledEvents.includes(data[0])) {
-          this._debug(`Disabled event recieved [${data[0]}]. I will discard this event.`);
+          this._debug(
+            `Disabled event recieved [${data[0]}]. I will discard this event.`
+          );
           break;
         }
 
