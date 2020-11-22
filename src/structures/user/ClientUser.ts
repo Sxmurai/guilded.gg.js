@@ -32,6 +32,18 @@ export class ClientUser extends User {
     this.client = client;
   }
 
+  public setUsername(username: string) {
+    this.client.emit(
+      "debug",
+      `(Connection) :: You are changing your username to: ${username}`
+    );
+
+    return this.client.rest.request("put", `/${this.id}/profilev2`, {
+      userId: this.id,
+      name: username,
+    });
+  }
+
   public setPassword(newPassword: string) {
     this.client.emit(
       "debug",
