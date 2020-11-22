@@ -33,6 +33,18 @@ export class ClientUser extends User {
   }
 
   public setPresence(status: Status) {
+    if (
+      typeof status !== "number" ||
+      Number(status) < 1 ||
+      Number(status) > 4
+    ) {
+      this.client.emit(
+        "error",
+        new Error("Presence must return a type of number (1-4)")
+      );
+      return;
+    }
+
     return this.client.rest.request("post", "/users/me/presence", {
       headers: {
         "Content-Type": "application/json",
@@ -72,7 +84,7 @@ export class ClientUser extends User {
       headers: {
         "Content-Type": "application/json",
       },
-      data
+      data,
     });
   }
 
