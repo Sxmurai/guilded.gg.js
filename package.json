@@ -1,6 +1,6 @@
 {
   "name": "guilded.gg.js",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A guilded.gg API wrapper",
   "main": "./dist/index.js",
   "repository": "git@github.com:Sxmurai/guilded.gg.js.git",
