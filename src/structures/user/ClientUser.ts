@@ -117,7 +117,7 @@ export class ClientUser extends User {
     return this.client.rest.request("post", "/users/me/presence", { status });
   }
 
-  public setStatus(text: string) {
+  public setStatus(text: string, emojiId = 90002547) {
     const data = {
       content: {
         object: "value",
@@ -139,8 +139,7 @@ export class ClientUser extends User {
           ],
         },
       },
-      customReactionId: 90002547,
-      //customReactionId: null,
+      customReactionId: emojiId,
       expireInMs: 0,
     };
 
