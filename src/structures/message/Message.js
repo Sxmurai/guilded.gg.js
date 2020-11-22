@@ -30,10 +30,82 @@ export class Message {
     this.createdAt = Date.parse(data.createdAt) ?? Date.now();
 
     /**
-     * The content of the message
-     * @type {string}
+     * The contents of the message
+     * @type {string[]}
      */
-    this.content =
-      data.message.content.document.nodes[0].nodes[0].leaves[0].text ?? null;
+    this.content = this.getMessageContent(data.message.content)
+  }
+
+  /**
+   * Gets the correct message information
+   * @param {Record<string, any>} content
+   */
+  getMessageContent(content) {
+    const format = [];
+
+    for (const line of content.document.nodes) {
+      let text = "";
+
+      switch (line.type) {
+        case "paragraph":
+          for (const node of line.nodes) {
+            switch (node.object) {
+              case "text":
+                for (const leaf of node.leaves) {
+                  text += leaf.text;
+                }
+            }
+          }
+          break;
+
+        case "inline":
+          for (const leaf of line.nodes[0].leaves) {
+            switch (typeof leaf.text) {
+              case "string":
+                text += leaf.text;
+                break;
+
+              case "object":
+                text += leaf.text.text;
+                break;
+            }
+          }
+          break;
+
+        case "block-quote-container":
+          for (const node of line.nodes) {
+            for (const nodeLine of node.nodes) {
+              switch (nodeLine.object) {
+                case "text":
+                  text += nodeLine.leaves[0].text;
+                  break;
+
+                case "inline":
+                  text += nodeLine.nodes[0].leaves[0].text;
+                  break;
+              }
+            }
+          }
+          break;
+      }
+
+      format.push(text);
+    }
+
+    return format;
   }
 }
+
+/* 
+                case "markdown-plain-text":
+                    lineContent.content.push( { "type": "text", "text": line.nodes[0].leaves[0].text } );
+                    lineContent.text += line.nodes[0].leaves[0].text;
+
+                    break;
+                case "webhookMessage":
+                    lineContent.content.push( { "type": "embed", "content": line.data.embeds } );
+                
+                    break;
+            }
+
+            formattedMsg.push( lineContent ); */
