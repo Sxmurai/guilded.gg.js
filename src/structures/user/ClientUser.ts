@@ -72,7 +72,7 @@ export class ClientUser extends User {
       `(Connection) :: You are changing your password to: ${newPassword}`
     );
 
-    return this.client.rest.request("post", "/users/me/passwowrd", {
+    return this.client.rest.request("post", "/users/me/password", {
       newPassword,
     });
   }
